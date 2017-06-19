@@ -1,0 +1,134 @@
+<template>
+    <div id="background">
+	<el-row>
+		<el-col :span="8">&nbsp</el-col>
+		
+		<el-col :span="7">
+			<div class="form">
+		  		<el-form :model="registerForm" :rules="rules" ref="loginForm"  label-width="90px">
+					<el-form-item>
+					<el-col :span="20">
+					<h1>用户注册</h1>
+					</el-col>
+					</el-form-item>
+
+					<el-form-item label="用户名" prop="username">
+						<el-input v-model="registerForm.username"></el-input>
+					</el-form-item>
+
+					<el-form-item label="密码" prop="password">
+						<el-input v-model="registerForm.password" type="password"></el-input>
+					</el-form-item>
+					
+					<el-form-item label="确认密码" prop="checkPassword">
+						<el-input v-model="registerForm.checkPassword"  type="password"></el-input>
+					</el-form-item>
+
+					<el-form-item label="手机号码" prop="phone">
+						<el-input v-model="registerForm.phone"></el-input>
+					</el-form-item>
+					
+					<el-form-item label="验证码" prop="verifyCode">
+						<el-input v-model="registerForm.verifyCode"></el-input>
+					</el-form-item>
+
+					<el-form-item>
+						<el-col :span="12">
+							<el-button type="primary" @click="register">注册</el-button>
+						</el-col>
+						<el-col :span="4">
+							<el-button type="reset">重置</el-button>
+						</el-col>
+					</el-form-item>	
+		  		</el-form>
+		  		</div>
+  		</el-col>
+
+  		<el-col :span="8"></el-col>
+	</el-row>
+	</div>
+</template>
+
+<script>
+import mockdata from '@/util/mock.js'
+
+	export default {
+		data(){
+			return{
+				registerForm :{
+					username : '' ,
+					password : '' ,
+					checkPassword: '',
+					phone : '',
+					verifyCode :'',
+				},
+				rules :{
+					username:[
+						{
+							required:true ,message:'请输入用户名',trigger:'blur',
+						}
+					],
+					password:[
+						{
+							required :true ,message : '请输入密码',trigger:'blur',
+						}
+					],
+					checkPassword:[
+						{
+							required :true ,message :'重新确认密码' ,trigger:'blur',
+						}
+					],
+					phone:[
+						{
+							required:true ,message:'请输入电话号码',trigger:'blur',
+						}
+					],
+					verifyCode:[
+						{
+							required:true ,message:'请输入验证码',trigger:'blur',
+						}
+					],
+
+				}
+			}
+		},
+		methods:{
+			register(){
+			 this.$http.get("/register").then(
+
+          (successData) => {console.log(successData.body);},
+
+          (fileData) => {console.log(fileData);})
+
+			}
+		}
+	}
+
+</script>
+
+<style scoped>
+.form {
+  margin-top: 60px ;
+  border:  1px solid;
+  padding: 20px 20px 20px 0px;
+  background: #fff ;
+  border-radius: 5px;	
+}
+
+#background{
+  display: table;
+  width: 100%;
+  height: 100%;
+  padding: 0px 0;
+  text-align: center;
+  /*color: #fff ;*/
+  background: url('../assets/background2.jpg') center;
+  background-color: #000;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: repeat;
+  position: fixed;
+} 
+
+
+</style>
