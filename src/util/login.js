@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 
 var data = Mock.mock('/login',{
-	"canlogin": 1,
+	"islogin": 1,
 	"users" :[
 		{
 			"id":1 ,

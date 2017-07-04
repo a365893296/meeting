@@ -1,9 +1,9 @@
 import Mock from 'mockjs' 
 
 
-export default Mock.mock('/getTabelData',{
-
-	'meeting|5-10':[{
+export default Mock.mock('/getTableData',{
+	'total': 66 ,
+	'meetings|66':[{
 		'date' : '@date' ,
 		'time' : '@time' ,
 		'duration|1-5' : 1 ,

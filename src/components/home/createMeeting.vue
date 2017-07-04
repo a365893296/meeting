@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import mockdata from '@/util/category.js'
 import treedata from '@/util/treedata.js'
 import transfer from '@/util/transfer.js'

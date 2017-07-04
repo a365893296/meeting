@@ -6,11 +6,19 @@ import router from './router'
 import ElementUI from 'element-ui'
 import VueResource from 'vue-resource'
 import 'element-ui/lib/theme-default/index.css'
+window.axios = require('axios') ;
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueResource)
 
+window.axios.defaults.headers.common['X-Requested-With'] ='XMLHttpRequest' ;
+let token =  document.head.querySelector('meta[name="csrf_token"]');
+if(token){
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content ;
+}else{
+    console.log('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token') ;
+}
 
 /* eslint-disable no-new */
 new Vue({
