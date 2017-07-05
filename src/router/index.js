@@ -37,6 +37,9 @@ export default new Router({
 			},{
 				path : '/home/create' ,
 				component : resolve => require(['../components/home/createMeeting.vue'],resolve)
+			},{
+				path: '/home/exit' ,
+				component : resolve => require(['../components/home/exit.vue'],resolve)
 			}
 		]			
 	},

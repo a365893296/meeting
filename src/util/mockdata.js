@@ -1,7 +1,7 @@
 import Mock from "mockjs"
 
 export default Mock.mock('/register',{
-	'isRegister' : true ,
+	'isRegister' : false ,
 	'message' : 'mock data is success ' ,
 })
 

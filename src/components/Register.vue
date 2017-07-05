@@ -34,7 +34,7 @@
 
                         <el-form-item>
                             <el-col :span="12">
-                                <el-button type="primary" @click="register('registerForm')">注册</el-button>
+                                <el-button type="primary" @click="register(registerForm)">注册</el-button>
                             </el-col>
                             <el-col :span="4">
                                 <el-button @click="resetForm('registerForm')">重置</el-button>
@@ -50,11 +50,21 @@
 </template>
 
 <script>
-    import mockdata from '@/util/mockdata.js'
+//    import mockdata from '@/util/mockdata.js'
 
     export default {
         data(){
+
+            var validatePassword = (rule, value, callback) => {
+                if (this.registerForm.password !== this.registerForm.checkPassword) {
+                    callback(new Error('两次输入的密码不同!'));
+                } else {
+                    callback();
+                }
+            };
+
             return {
+
                 registerForm: {
                     username: '',
                     password: '',
@@ -62,6 +72,7 @@
                     phone: '',
                     verifyCode: '',
                 },
+
                 rules: {
                     username: [
                         {
@@ -73,11 +84,16 @@
                     password: [
                         {
                             required: true, message: '请输入密码', trigger: 'blur',
-                        }
+                        },
+//                        {
+//                            validator: validatePassword, trigger: 'blur',
+//                        }
                     ],
                     checkPassword: [
                         {
                             required: true, message: '重新确认密码', trigger: 'blur',
+                        }, {
+                            validator: validatePassword, trigger: 'blur',
                         }
                     ],
                     phone: [
@@ -97,40 +113,48 @@
 
         methods: {
             register(formName){
-
+                console.log(formName)
                 let _this = this;
 
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+                this.$refs['registerForm'].validate((valid) => {
+                        if (valid) {
 
-//                axios.post('/register', {
-//                    username: formName.username,
-//                    password: formName.password,
-//                    phone: formName.phone
-//                }).then(function (response) {
-//                    var data = response.data;
-//                    console.log(data);
-//                    if (data.isRegister) {
-//                        _this.$message({
-//                            message: '注册成功~',
-//                            type: "success"
-//                        });
-//                    } else {
-//                        _this.$message({
-//                            showClose: true,
-//                            message: '注册失败',
-//                            type: 'error'
-//                        })
-//                    }
-//                }).catch(function (error) {
-//                    console.log(error);
-//                })
+                            axios.post('/register', {
+                                'username': formName.username,
+                                'password': formName.password,
+                                'phone': formName.phone
+                            }).then(function (response) {
+                                var data = response.data;
+                                console.log(data);
+                                if (data.isRegister) {
+                                    _this.$message({
+                                        message: '注册成功~',
+                                        type: "success"
+                                    });
+
+                                    setTimeout(() => {
+                                        _this.$router.push({path: '/home'})
+                                    }, 3000);
+
+                                } else {
+                                    _this.$message({
+                                        showClose: true,
+                                        message: data.message,
+                                        type: 'error'
+                                    })
+                                }
+
+                            }).catch(function (error) {
+                                console.log(error);
+                            })
+
+                        }
+                        else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    }
+                );
 
             },
 
@@ -138,7 +162,11 @@
                 this.$refs[formName].resetFields();
             }
 
-        }
+        },
+//        beforeRouteLeave(to, from, next){
+//
+//        },
+
     }
 
 </script>
