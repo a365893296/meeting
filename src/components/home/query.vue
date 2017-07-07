@@ -84,7 +84,7 @@
 </template>
 
 <script>
-                    import mockdata from '@/util/tabledata.js'
+//                    import mockdata from '@/util/tabledata.js'
     export default{
         data (){
             return {

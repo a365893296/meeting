@@ -35,23 +35,8 @@ export default new Router({
                     path: '/home/create',
                     component: resolve => require(['../components/home/createMeeting.vue'], resolve)
                 },
-                {
-                    path: '/home/exit',
-                    component: resolve => require(['../components/home/exit.vue'], resolve),
-                    // beforeEnter: (to, from, next) => {
-                    //     alert(1)
-                    // },
-
-                    redirect: '/login',
-                    // push:'/login'
-
-                }
             ],
-            beforeLeave:(to,from, next)=>{
-                if(to = {path:'/login'}){
-                    alert('beforeleave') ;
-                }
-            }
+
         },
 
     ]

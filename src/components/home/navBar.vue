@@ -3,7 +3,7 @@
         <el-row>
             <el-col>
                 <div class="leftBar">
-                    <el-menu theme="dark" default-active="query" router>
+                    <el-menu theme="dark" default-active="defaultActive" router>
                         <template v-for="item in navBarItems">
                             <template v-if="item.subs">
                                 <el-submenu :index="item.index">
@@ -16,16 +16,16 @@
                             <template v-else>
 
 
-                                    <el-menu-item :index="item.index" :route="item.route">
-                                        <i :class="item.icon"></i>{{item.title}}
-                                    </el-menu-item>
+                                <el-menu-item :index="item.index" :route="item.route">
+                                    <i :class="item.icon"></i>{{item.title}}
+                                </el-menu-item>
 
                             </template>
 
                         </template>
                         <template>
-                            <el-menu-item index="/home/exit" @click="confirmLeave">
-                                <i :class="el-icon-close"></i>退出
+                            <el-menu-item index="" @click="confirmLeave">
+                                <i class='el-icon-close'></i>退出
                             </el-menu-item>
                         </template>
                     </el-menu>
@@ -37,11 +37,13 @@
 </template>
 
 <script>
+//    import mockdata from '@/util/exit.js'
     import ElMenuItem from "../../../node_modules/element-ui/packages/menu/src/menu-item";
     export default{
         components: {ElMenuItem},
         data(){
             return {
+                defaultActive : 'query',
                 navBarItems: [
                     {
                         icon: 'el-icon-search',
@@ -61,7 +63,30 @@
         },
         methods: {
             confirmLeave() {
-                alert('are you sure that you want to exit this system ? ')
+                let _this = this;
+                this.$confirm('是否退出系统?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    axios.post('/logout', {}).then((response) => {
+                        console.log(response.data);
+                        if(response.data.isLogout){
+                            _this.$router.push('/login');
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+
+                }).catch(() => {
+                    this.$router.go(0);
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+
+                })
             }
         },
 //        beforeRouteLeave: (to, form, next) => {
