@@ -47,8 +47,7 @@
 </template>
 
 <script>
-//    import mockdata from '@/util/login.js'
-
+    import mockdata from '@/util/login.js'
 
     export default {
         data(){
