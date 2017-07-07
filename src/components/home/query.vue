@@ -1,5 +1,5 @@
 <template>
-    <div class="searchBar">
+    <div class="searchBar" style="margin-left:20px">
         <el-row :gutter="20">
             <el-form v-model="query">
                 <el-col :span="4">
@@ -45,7 +45,7 @@
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
-                <el-col :span="3" style="margin-top:35px ">
+                <el-col :span="3" style="margin-top:35px; margin-left:20px">
                     <el-button type="info" class="el-icon-search" @click="getTableData()">查询</el-button>
                 </el-col>
             </el-form>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-//                import mockdata from '@/util/tabledata.js'
+                    import mockdata from '@/util/tabledata.js'
     export default{
         data (){
             return {
@@ -217,33 +217,7 @@
                 this.getTableData();
             }
         },
-        computed: {
-//            tableData: function () {
-//
-//            }
 
-        },
-
-        created: function () {
-//mounted
-//            var data = [];
-//
-//            let _this = this;
-//            axios.post('/getTableData', {
-//                pageSize: this.pageSize,
-//            }).then(function (response) {
-//
-//                console.log(response.data);
-//                var data = response.data;
-//                console.log("data is  " + data);
-//                _this.tableData = data.meetings;
-//                _this.total = data.total;
-//
-//            }).catch(function (error) {
-//                console.log(error)
-//            })
-//
-        }
     }
 
 
@@ -252,7 +226,7 @@
 <style>
     .searchBar {
         margin-top: 10px;
-        padding-left: 20px;
+        /*padding-left: 20px;*/
         /*margin-left: 10px ;*/
         background-color: white;
         height: 30%;
