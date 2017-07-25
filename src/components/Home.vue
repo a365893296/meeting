@@ -1,21 +1,21 @@
 <template>
-    <div>
-        <el-row class="topBar">
-            <h1 style="margin-top: 7px">会议管理系统</h1>
-        </el-row>
-        <el-row>
-            <div>
-                <el-col :span="4">
+    <div  style="height:100%;" >
+        <div class="topBar">
+            <h1>会议管理系统</h1>
+        </div>
+        <el-row style="height:100%;">
+
+                <el-col :span="4" style="height:100%;">
                     <nav-bar></nav-bar>
                 </el-col>
-            </div>
-            <div>
-                <el-col :span="19">
+
+
+                <el-col :span="20">
                     <transition appear name="fade" mode="out-in">
                         <router-view></router-view>
                     </transition>
                 </el-col>
-            </div>
+
         </el-row>
     </div>
 </template>
@@ -35,18 +35,28 @@
 
 </script>
 
-<style scoped>
+<style>
+    html,body{
+        height:100% ;
+        width:100%;
+        margin: 0 ;
+        padding: 0 ;
+    }
 
     .topBar {
         width: 100%;
         background-color: rgb(46, 55, 68);
         height: 70px;
+        display:block;
         /*text-align: center;*/
+        margin-top: 0px;
+        padding-top:8px;
     }
 
-    .topBar > h1 {
+    .topBar h1 {
         color: white;
         text-align: center;
+        margin: auto ;
     }
 
     /* 可以设置不同的进入和离开动画 */
@@ -56,7 +66,7 @@
     }
 
     .slide-fade-leave-active {
-        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
 
     .slide-fade-enter, .slide-fade-leave-active {

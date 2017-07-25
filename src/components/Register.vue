@@ -170,7 +170,7 @@
 
 <style scoped>
     .form {
-        margin-top: 60px;
+        margin-top:30% ;
         border: 1px solid;
         padding: 20px 20px 20px 0px;
         background: #fff;
@@ -189,7 +189,7 @@
         background-size: cover;
         background-attachment: fixed;
         background-repeat: repeat;
-        position: fixed;
+        /*position: fixed;*/
     }
 
 

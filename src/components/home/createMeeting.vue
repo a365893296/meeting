@@ -1,8 +1,7 @@
 <template>
-    <div style="margin-left:30px">
-        <el-row :gutter="20">
+        <el-row :gutter="55" class="create_form">
             <el-form v-model="create">
-
+                <el-col :span="1">&nbsp</el-col>
                 <el-col :span="10">
                     <el-form-item label="会议主题">
                         <el-input v-model="create.topics"></el-input>
@@ -113,7 +112,6 @@
                 </el-col>
             </el-form>
         </el-row>
-    </div>
 
 </template>
 
@@ -249,6 +247,10 @@
 </script>
 
 <style>
+    .create_form{
+        margin-top:3% ;
+    }
+
     .el-dialog {
         text-align: left;
     }

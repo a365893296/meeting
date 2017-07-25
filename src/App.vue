@@ -1,9 +1,7 @@
+
 <template>
   <div id="app">
-  <!-- <img src="./assets/background.png"> -->
-<!--   <template v-if="show=='login'">
-    <login></login>
-  </template> -->
+
     <transition appear name="fade" mode="out-in" >
       <router-view></router-view>
     </transition>    
@@ -41,8 +39,11 @@ img {
   width: 100% ;
   height: 100% ;
 }
-body{
+html,body{
   margin : 0 ;
+  padding: 0 ;
+  width:100% ;
+  height: 100% ;
 }
 
 /* 可以设置不同的进入和离开动画 */

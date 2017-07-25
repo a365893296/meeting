@@ -47,7 +47,7 @@
 </template>
 
 <script>
-//    import mockdata from '@/util/login.js'
+    import mockdata from '@/util/login.js'
 
     export default {
         data(){
@@ -105,7 +105,7 @@
 
 <style scoped>
     .form {
-        margin-top: 120px;
+        margin-top:15%;
         /*border:  1px solid;*/
         padding: 20px 20px 20px 0px;
         background: #fff;
@@ -119,14 +119,16 @@
         padding: 0px 0;
         text-align: center;
         /*color: #fff ;*/
-        background: url('../assets/background2.jpg');
-        /*background: #fff;*/
+        background: url('../assets/background2.jpg') center;
         background-color: #000;
-        background-size: 100%;
+        background-size: cover;
         background-attachment: fixed;
-        background-repeat: no-repeat;
-        position: fixed;
+        background-repeat: repeat;
+        /*position: fixed;*/
     }
+
+
+
 
     .el-form-item__label {
         color: #e9e9e9;

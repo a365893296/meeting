@@ -1,8 +1,9 @@
 <template>
-    <div>
-        <el-row>
-            <el-col>
-                <div class="leftBar">
+    <div style="height:100%;">
+        <el-row style="height:100%;">
+            <el-col style="height:100%;">
+                <div class="leftBar" id="leftBar">
+
                     <el-menu theme="dark" default-active="defaultActive" router>
                         <template v-for="item in navBarItems">
                             <template v-if="item.subs">
@@ -15,7 +16,6 @@
                             </template>
                             <template v-else>
 
-
                                 <el-menu-item :index="item.index" :route="item.route">
                                     <i :class="item.icon"></i>{{item.title}}
                                 </el-menu-item>
@@ -24,9 +24,11 @@
 
                         </template>
                         <template>
+                            <div class="exit">
                             <el-menu-item index="" @click="confirmLeave">
                                 <i class='el-icon-close'></i>退出
                             </el-menu-item>
+                            </div>
                         </template>
                     </el-menu>
                 </div>
@@ -38,9 +40,9 @@
 
 <script>
 //    import mockdata from '@/util/exit.js'
-    import ElMenuItem from "../../../node_modules/element-ui/packages/menu/src/menu-item";
+//    import ElMenuItem from "../../../node_modules/element-ui/packages/menu/src/menu-item";
     export default{
-        components: {ElMenuItem},
+//        components: {ElMenuItem},
         data(){
             return {
                 defaultActive : 'query',
@@ -80,7 +82,7 @@
                     });
 
                 }).catch(() => {
-                    this.$router.go(0);
+//                    this.$router.go(0);
                     this.$message({
                         type: 'info',
                         message: '已取消'
@@ -89,34 +91,7 @@
                 })
             }
         },
-//        beforeRouteLeave: (to, form, next) => {
-//            let _this = this;
-//            this.$confirm('是否退出系统?', '提示', {
-//                confirmButtonText: '确定',
-//                cancelButtonText: '取消',
-//                type: 'warning'
-//            }).then(() => {
-//                this.$message({
-//                    type: 'success',
-//                    message: '退出成功!'
-//                });
-//                next(true) ;
-////                _this.$router.push()
-////                axios.get('/logout').then(() => {
-////                    console.log(1);
-////                    if (response.data.isLogout) {
-////                        _this.$router.push({'path': '/login'});
-////                    }else{
-////
-////                    }
-////                })
-//            }).catch(() => {
-//                this.$message({
-//                    type: 'info',
-//                    message: '已取消',
-//                });
-//            });
-//        }
+
         // computed:{
         //           onRoutes(){
         //           	console.log(this.$route.path.replace('/',''))
@@ -126,21 +101,30 @@
     }
 </script>
 
-<style scoped>
-    .leftBar {
-        display: block;
-        /*position: fixed;*/
-        width: 250px;
+<style>
+    /*.leftBar {*/
+        /*!*display: block;*!*/
+        /*width: 100%;*/
+        /*height:100%;*/
+        /*left: 0;*/
+        /*top: 70px;*/
+        /*bottom:0;*/
+        /*background-color: #2E363F;*/
+
+    /*}*/
+    /*@import url("//unpkg.com/element-ui@1.4.0/lib/theme-default/index.css");*/
+
+
+    #leftBar{
+        width: 100%;
+        height:100%;
         left: 0;
         top: 70px;
-        /*bottom:0;*/
-        background: #2E363F;
-        height: 100%;
-
+        background-color: #2E363F;
     }
 
-    .leftBar > ul {
-        height: 100%;
-    }
+    /*.leftBar ul {*/
+        /*height: 100%;*/
+    /*}*/
 
 </style>
