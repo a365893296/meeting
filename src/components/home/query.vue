@@ -1,8 +1,8 @@
 <template>
     <div class="searchBar">
-        <el-row  type="flex" justify="center" :gutter="30" style="margin-top:2%">
+        <el-row type="flex" justify="center" :gutter="30" style="margin-top:2%">
             <el-form v-model="query">
-                <el-col :span="4" :offset="2">
+                <el-col :span="5" :offset="1">
                     <el-form-item label="会议名称">
                         <el-input v-model="query.topic"></el-input>
                     </el-form-item>
@@ -130,13 +130,16 @@
                     {
                         label: '高级',
                         meeting_level: 'high'
-                    }, {
+                    },
+                    {
                         label: '中级',
                         meeting_level: 'middle'
-                    }, {
+                    },
+                    {
                         label: '普通',
                         meeting_level: 'common'
-                    }, {
+                    },
+                    {
                         label: '不限',
                         meeting_level: 'all',
                     }
@@ -146,13 +149,16 @@
                     {
                         label: '网络会议',
                         meeting_feature: 'net',
-                    }, {
+                    },
+                    {
                         label: '电话会议',
                         meeting_feature: 'phone'
-                    }, {
+                    },
+                    {
                         label: '普通会议',
                         meeting_feature: 'common'
-                    }, {
+                    },
+                    {
                         label: '不限',
                         meeting_feature: 'all'
                     }
@@ -163,13 +169,16 @@
                     {
                         label: '准备',
                         meeting_state: 'prepare'
-                    }, {
+                    },
+                    {
                         label: '进行中',
                         meeting_state: 'ing',
-                    }, {
+                    },
+                    {
                         label: '已完成',
                         meeting_state: 'complete',
-                    }, {
+                    },
+                    {
                         label: '不限',
                         meeting_state: 'all',
                     }

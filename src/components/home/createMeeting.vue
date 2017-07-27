@@ -68,22 +68,27 @@
                     <!-- 参与人员选择框 -->
                     <el-dialog title="参与人员选择" :visible.sync="participantVisible" id="dialog">
                         <el-row :gutter='20'>
+
                             <el-col :span="6">
                                 <el-tree
                                         :data="treeData"
                                         :props="treeDataProps"
                                         @node-click="getEmployees"
                                         highlight-current
-                                        :indent='25'></el-tree>
+                                        :indent='25'>
+                                </el-tree>
                             </el-col>
+
                             <el-col :span='18'>
                                 <el-transfer
                                         v-model="create.participant"
                                         :data="transferData"
                                         :titles="['可选人员', '已选人员']"
                                         :indent='25'
-                                ></el-transfer>
+                                >
+                                </el-transfer>
                             </el-col>
+
                         </el-row>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="participantVisible = false">取 消</el-button>
@@ -92,25 +97,40 @@
                     </el-dialog>
 
 
-                    <el-form-item label="日期选项">
+                    <el-form-item label="日期">
                         <el-date-picker
-                                    v-model="create.meeting_time"
-                                    type="datetime"
-                                    placeholder="选择日期时间"
-                                    :picker-options="{
+                                v-model="date"
+                                type="date"
+                                placeholder="选择日期"
+                                :picker-options="datePickerOption">
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <el-form-item label="时间">
+                        <el-time-select
+                                v-model="time"
+                                :picker-options="{
                                     start: '08:30',
                                     step: '00:15',
-                                    end: '18:30'
-                                    }"
-                                          >
-                        </el-date-picker>
+                                    end: '22:30'
+                                }"
+                                placeholder="选择时间">
+                        </el-time-select>
+
                     </el-form-item>
 
                     <el-form-item label="持续时间（分钟）">
                         <el-input-number v-model="create.duration" :step="15" :min="0"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="会议地点">
-                        <el-input v-model="create.site" readonly></el-input>
+                    <el-form-item label="会议室">
+                        <el-select v-model="create.site" filterable placeholder="请选择">
+                            <el-option
+                                    v-for="site in sitesOption"
+                                    :key="site.value"
+                                    :label="site.label"
+                                    :value="site.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary">保存</el-button>
@@ -124,7 +144,7 @@
 </template>
 
 <script>
-    import mockdata from '@/util/category.js'
+//    import mockdata from '@/util/category.js'
     import treedata from '@/util/treedata.js'
     import transfer from '@/util/transfer.js'
 
@@ -135,11 +155,37 @@
                 create: {
                     topics: '',
 
-                    meeting_feature: 'all',
-                    meeting_feature_option: [],
+                    meeting_feature: 'common',
+                    meeting_feature_option: [
+                        {
+                            label: '网络会议',
+                            meeting_feature: 'net',
+                        },
+                        {
+                            label: '电话会议',
+                            meeting_feature: 'phone'
+                        },
+                        {
+                            label: '普通会议',
+                            meeting_feature: 'common'
+                        },
+                    ],
 
-                    meeting_level: 'all',
-                    meeting_level_option: [],
+                    meeting_level: 'common',
+                    meeting_level_option: [
+                        {
+                            label: '高级',
+                            meeting_level: 'high'
+                        },
+                        {
+                            label: '中级',
+                            meeting_level: 'middle'
+                        },
+                        {
+                            label: '普通',
+                            meeting_level: 'common'
+                        },
+                    ],
 
                     content: '',
                     host: '',
@@ -148,8 +194,12 @@
                     duration:0 ,
                     site: '',
 
-                    meeting_time: '',
+                    meeting_time: this.datetime,
                 },
+
+                time : '' ,
+                date: '' ,
+                sitesOption:[],
 
                 //参与人员选择 dialog
                 participantVisible: false,
@@ -160,36 +210,19 @@
                 },
                 transferData: [],
 
-                //日期选择器 datepicker
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '最近一周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
+                datePickerOption: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
                 },
             }
         },
+        computed:{
+            datetime :()=>{
+                return this.date +' '+ this.time ;
+            }
+        },
+
         methods: {
 
             getTreeData(){
@@ -232,20 +265,25 @@
                     }).catch(function (error) {
                     console.log(error);
                 });
-                this.$message('sdasd');
             }
         },
-        created: function () {
-            let _this = this;
 
-            axios.post('/getTableCategory', {})
-                .then(function (response) {
-                    var data = response.data;
-                    _this.create.meeting_feature_option = data.meeting_feature_option;
-                    _this.create.meeting_level_option = data.meeting_level_option;
-                }).catch(function (error) {
-                console.log(error);
-            });
+        mounted: function () {
+
+        },
+        created: function () {
+
+            //在create中 获取参与人员数据以及会议室数据
+//            let _this = this;
+//
+//            axios.post('/getTableCategory', {})
+//                .then(function (response) {
+//                    var data = response.data;
+//                    _this.create.meeting_feature_option = data.meeting_feature_option;
+//                    _this.create.meeting_level_option = data.meeting_level_option;
+//                }).catch(function (error) {
+//                console.log(error);
+//            });
 
 
         },
