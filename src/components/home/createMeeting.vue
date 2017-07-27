@@ -1,8 +1,7 @@
 <template>
         <el-row :gutter="55" class="create_form">
             <el-form v-model="create">
-                <el-col :span="1">&nbsp</el-col>
-                <el-col :span="10">
+                <el-col :span="10" :offset="1">
                     <el-form-item label="会议主题">
                         <el-input v-model="create.topics"></el-input>
                     </el-form-item>
@@ -95,19 +94,28 @@
 
                     <el-form-item label="日期选项">
                         <el-date-picker
-                                v-model="create.meeting_time"
-                                type="daterange"
-                                align="right"
-                                placeholder="选择日期范围"
-                                :picker-options="pickerOptions">
+                                    v-model="create.meeting_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    :picker-options="{
+                                    start: '08:30',
+                                    step: '00:15',
+                                    end: '18:30'
+                                    }"
+                                          >
                         </el-date-picker>
                     </el-form-item>
 
-                    <el-form-item label="持续时间">
-                        <el-input v-model="create.duration"></el-input>
+                    <el-form-item label="持续时间（分钟）">
+                        <el-input-number v-model="create.duration" :step="15" :min="0"></el-input-number>
                     </el-form-item>
                     <el-form-item label="会议地点">
                         <el-input v-model="create.site" readonly></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary">保存</el-button>
+                        <el-button type="success">提交</el-button>
+                        <el-button type="danger">清空</el-button>
                     </el-form-item>
                 </el-col>
             </el-form>
@@ -137,7 +145,7 @@
                     host: '',
                     master: '',
                     participant: [],
-
+                    duration:0 ,
                     site: '',
 
                     meeting_time: '',

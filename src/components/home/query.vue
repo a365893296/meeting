@@ -1,13 +1,13 @@
 <template>
-    <div class="searchBar" style="margin-left:20px">
-        <el-row :gutter="20">
+    <div class="searchBar">
+        <el-row  type="flex" justify="center" :gutter="30" style="margin-top:2%">
             <el-form v-model="query">
-                <el-col :span="4">
+                <el-col :span="4" :offset="2">
                     <el-form-item label="会议名称">
                         <el-input v-model="query.topic"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item label="会议级别">
                         <el-select v-model="query.meeting_level">
                             <el-option v-for="item in meeting_level_option" :key="item.meeting_level"
@@ -16,7 +16,7 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item label="会议性质">
                         <el-select v-model="query.meeting_feature">
                             <el-option v-for="item in meeting_feature_option" :key="item.meeting_feature"
@@ -25,7 +25,7 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item label="会议状态">
                         <el-select v-model="query.meeting_state">
                             <el-option v-for="item in meeting_state_option" :key="item.meeting_state"
@@ -45,14 +45,14 @@
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
-                <el-col :span="3" style="margin-top:35px; margin-left:20px">
+                <el-col :span="4" style="margin-top:3% ;">
                     <el-button type="info" class="el-icon-search" @click="getTableData()">查询</el-button>
                 </el-col>
             </el-form>
         </el-row>
-        <hr>
-        <el-row>
-            <div>
+        <hr style="border:1px solid #e9e9e9;">
+        <el-row style="margin-top:2%;">
+            <el-col :span="22" :offset="1">
                 <el-table ref="multipleTable" border tooltip-effect="dark" :data="tableData" max-height="475px">
                     <el-table-column type="selection"></el-table-column>
                     <el-table-column prop="date" label="日期" sortable></el-table-column>
@@ -65,8 +65,9 @@
                     <el-table-column prop="master" label="主持人" sortable></el-table-column>
                     <el-table-column prop="host" label="主办单位" sortable></el-table-column>
                 </el-table>
-            </div>
-            <div>
+            </el-col>
+
+            <el-col style="margin-top:1%;">
                 <el-pagination
                         :current-page.sync="currentPage"
                         :page-size="this.pageSize"
@@ -76,15 +77,15 @@
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total"
                 >
-
                 </el-pagination>
-            </div>
+            </el-col>
+
         </el-row>
     </div>
 </template>
 
 <script>
-//                    import mockdata from '@/util/tabledata.js'
+    //                    import mockdata from '@/util/tabledata.js'
     export default{
         data (){
             return {
