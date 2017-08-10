@@ -4,6 +4,7 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
+      //编译生产路径
     index: path.resolve(__dirname, '/Users/nikejin/meetingsystem/public/index.html'),
     assetsRoot: path.resolve(__dirname, '/Users/nikejin/meetingsystem/public/'),
     assetsSubDirectory: 'static',
