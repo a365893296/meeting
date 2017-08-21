@@ -119,20 +119,30 @@
 
         </el-form-item>
 
-        <el-form-item label="持续时间（分钟）">
-          <el-input-number v-model="create.duration" :step="15" :min="0"></el-input-number>
+        <el-form-item label="时长">
+          <el-input-number v-model="create.duration" :step="15" :min="0"
+                           @change="durationIsChange = true"></el-input-number>
+          （分钟）
         </el-form-item>
         <el-form-item label="会议室">
-          <el-select v-model="create.site" filterable placeholder="请选择">
+          <el-select
+            v-model="create.site"
+            filterable
+            placeholder="请选择"
+            noDataText="请选择会议时间和时长"
+            @visible-change="getEmptyRooms"
+          >
             <el-option
-              v-for="site in sitesOption"
-              :key="site.value"
-              :label="site.label"
-              :value="site.value">
+              v-for="room in sitesOption"
+              :key="room.id"
+              :label="room.site"
+              :value="room.id">
             </el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item>
+          <!--todo 保存到本地  暂未实现-->
           <el-button type="primary">保存</el-button>
           <el-button type="success">提交</el-button>
           <el-button :plain='true' type="danger">清空</el-button>
@@ -144,9 +154,11 @@
 </template>
 
 <script>
-  //    import mockdata from '@/util/category.js'
-  import treedata from '@/util/treedata.js'
+//  import mockdata from '@/util/category.js'
+//  import treedata from '@/util/treedata.js'
 //  import transfer from '@/util/transfer.js'
+//  import rooms from '@/util/rooms.js'
+
 
   export default {
     data() {
@@ -217,10 +229,14 @@
             return time.getTime() < Date.now() - 8.64e7;
           }
         },
+        datetimeIsChange: false,
+        durationIsChange: false,
       }
     },
+
     computed: {
       datetime: () => {
+        this.durationIsChange = true;
         return this.date + ' ' + this.time;
       }
     },
@@ -228,29 +244,27 @@
     methods: {
       getDept() {
         let _this = this;
-        // console.log(_this.treeData)
         if (_this.dept) {
           axios.get('/getDept', {})
             .then(function (response) {
               var data = response.data.dept;
-              console.log(response.data)
-              console.log('dept ====' + data)
               _this.dept = data;
             }).catch(function (error) {
             console.log(error);
           })
         }
       },
-      //todo 能正确获取Users。参与人员选择未完成
+
       getUsers(data) {
+        //能正确获取人员，但只在部门下显示对应已被选择人员
+
+        console.log(this.create.participant);
+
         let _this = this;
-        console.log("employee data =" +  data.id) ;
-        axios.post('/getUsers', { id: data})
+        axios.post('/getUsers', {id: data})
           .then(function (response) {
             const data = response.data.users;
-            console.log(data);
             const transferData = [];
-
             for (let i = 0; i < data.length; i++) {
               transferData.push({
                 key: data[i].id,
@@ -263,28 +277,36 @@
           }).catch(function (error) {
           console.log(error);
         });
+      },
+
+      getEmptyRooms() {
+        let _this = this;
+        if (this.datetime != null && this.create.duration != 0) {
+          if (_this.datetimeIsChange || _this.durationIsChange) {
+            axios.post('/getEmptyRooms',{
+              'meeting_time':_this.datetime ,
+              'duration' : _this.create.duration ,
+            }).then(function (response) {
+
+              var emptyRooms = response.data.emptyRooms;
+              _this.sitesOption = emptyRooms;
+              _this.datetimeIsChange = false;
+              _this.durationIsChange = false;
+//              console.log(emptyRooms);
+            }).catch(function (error) {
+              console.log(error);
+            });
+          }
+        }
       }
+
+
     },
 
     mounted: function () {
       this.getDept();
     },
-    created: function () {
 
-      //在create中 获取参与人员数据以及会议室数据
-//            let _this = this;
-//
-//            axios.post('/getTableCategory', {})
-//                .then(function (response) {
-//                    var data = response.data;
-//                    _this.create.meeting_feature_option = data.meeting_feature_option;
-//                    _this.create.meeting_level_option = data.meeting_level_option;
-//                }).catch(function (error) {
-//                console.log(error);
-//            });
-
-
-    },
 
   }
 
