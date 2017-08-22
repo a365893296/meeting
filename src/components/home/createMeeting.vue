@@ -1,15 +1,15 @@
 <template>
   <el-row :gutter="55" class="create_form">
-    <el-form v-model="create">
+    <el-form :model="create" :rules="createRules" ref="create" label-width="90px">
       <el-col :span="10" :offset="1">
-        <el-form-item label="会议主题">
-          <el-input v-model="create.topics"></el-input>
+        <el-form-item label="会议主题" prop="topic">
+          <el-input v-model="create.topic"></el-input>
         </el-form-item>
 
         <el-form-item label="会议级别">
           <el-select v-model="create.meeting_level">
             <el-option
-              v-for="item in create.meeting_level_option"
+              v-for="item in meeting_level_option"
               :key="item.meeting_level"
               :label="item.label"
               :value="item.meeting_level">
@@ -20,7 +20,7 @@
         <el-form-item label="会议性质">
           <el-select v-model="create.meeting_feature">
             <el-option
-              v-for="item in create.meeting_feature_option"
+              v-for="item in meeting_feature_option"
               :key="item.meeting_feature"
               :label="item.label"
               :value="item.meeting_feature">
@@ -58,7 +58,7 @@
 
 
         <!-- openParticipant 在data中 -->
-        <el-form-item label="参与人员">
+        <el-form-item label="参与人员" prop="participant">
           <el-col :span="17">
           </el-col>
           <el-button type="primary" @click="participantVisible = true">选择</el-button>
@@ -124,7 +124,7 @@
                            @change="durationIsChange = true"></el-input-number>
           （分钟）
         </el-form-item>
-        <el-form-item label="会议室">
+        <el-form-item label="会议室" prop="site">
           <el-select
             v-model="create.site"
             filterable
@@ -144,20 +144,21 @@
         <el-form-item>
           <!--todo 保存到本地  暂未实现-->
           <el-button type="primary">保存</el-button>
-          <el-button type="success">提交</el-button>
+          <el-button type="success" @click="commit(create)">提交</el-button>
           <el-button :plain='true' type="danger">清空</el-button>
         </el-form-item>
       </el-col>
     </el-form>
+
   </el-row>
 
 </template>
 
 <script>
-//  import mockdata from '@/util/category.js'
-//  import treedata from '@/util/treedata.js'
-//  import transfer from '@/util/transfer.js'
-//  import rooms from '@/util/rooms.js'
+  //  import mockdata from '@/util/category.js'
+  //  import treedata from '@/util/treedata.js'
+  //  import transfer from '@/util/transfer.js'
+  //  import rooms from '@/util/rooms.js'
 
 
   export default {
@@ -165,40 +166,9 @@
       return {
         // form数据
         create: {
-          topics: '',
-
+          topic: '',
           meeting_feature: 'common',
-          meeting_feature_option: [
-            {
-              label: '网络会议',
-              meeting_feature: 'net',
-            },
-            {
-              label: '电话会议',
-              meeting_feature: 'phone'
-            },
-            {
-              label: '普通会议',
-              meeting_feature: 'common'
-            },
-          ],
-
           meeting_level: 'common',
-          meeting_level_option: [
-            {
-              label: '高级',
-              meeting_level: 'high'
-            },
-            {
-              label: '中级',
-              meeting_level: 'middle'
-            },
-            {
-              label: '普通',
-              meeting_level: 'common'
-            },
-          ],
-
           content: '',
           host: '',
           master: '',
@@ -206,7 +176,48 @@
           duration: 0,
           site: '',
 
-          meeting_time: this.datetime,
+        },
+
+        meeting_feature_option: [
+          {
+            label: '网络会议',
+            meeting_feature: 'net',
+          },
+          {
+            label: '电话会议',
+            meeting_feature: 'phone'
+          },
+          {
+            label: '普通会议',
+            meeting_feature: 'common'
+          },
+        ],
+
+        meeting_level_option: [
+          {
+            label: '高级',
+            meeting_level: 'high'
+          },
+          {
+            label: '中级',
+            meeting_level: 'middle'
+          },
+          {
+            label: '普通',
+            meeting_level: 'common'
+          },
+        ],
+
+        createRules: {
+          topic: [
+            {required: true, message: "请输入会议主题", trigger: 'blur',}
+          ],
+          participant: [
+            {required: true, message: "请选择参与人员", trigger: 'blur'}
+          ],
+          site: [
+            {required: true, message: '请选择会议室', trigger: 'blur'}
+          ],
         },
 
         time: '',
@@ -235,9 +246,13 @@
     },
 
     computed: {
-      datetime: () => {
+      datetime: function () {
         this.durationIsChange = true;
-        return this.date + ' ' + this.time;
+        var d = new Date(this.date);
+
+        var res = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + this.time;
+
+        return res;
       }
     },
 
@@ -283,13 +298,14 @@
         let _this = this;
         if (this.datetime != null && this.create.duration != 0) {
           if (_this.datetimeIsChange || _this.durationIsChange) {
-            axios.post('/getEmptyRooms',{
-              'meeting_time':_this.datetime ,
-              'duration' : _this.create.duration ,
+            axios.post('/getEmptyRooms', {
+              'meeting_time': _this.datetime,
+              'duration': _this.create.duration,
             }).then(function (response) {
 
               var emptyRooms = response.data.emptyRooms;
               _this.sitesOption = emptyRooms;
+              _this.create.site = null ;
               _this.datetimeIsChange = false;
               _this.durationIsChange = false;
 //              console.log(emptyRooms);
@@ -298,7 +314,34 @@
             });
           }
         }
-      }
+      },
+
+      commit(create) {
+        let _this = this;
+        console.log(this.datetime)
+        axios.post('/createMeeting',
+          {
+            data: create,
+            meeting_time: this.datetime
+          }
+        ).then(function (response) {
+
+          var data = response.data;
+          if (data.isSuccess) {
+            _this.$message({
+              'type': 'success',
+              'message': '添加成功~',
+            });
+          } else {
+            _this.$message.error('添加失败!');
+
+          }
+
+        }).catch(function (error) {
+          console.log(error);
+        })
+
+      },
 
 
     },
