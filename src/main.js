@@ -30,3 +30,15 @@ new Vue({
   render: h => h(App)
 })
 
+// router.beforeEach((to,from,next)=>{
+//   if(!sessionStorage.getItem('remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d')){
+//     console.log('not found accessToken')
+//     next({
+//       path: '/login',
+//       query: { redirect: to.fullPath }
+//     })
+//   }else{
+//     next();
+//   }
+// })
+
