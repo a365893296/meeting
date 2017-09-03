@@ -318,7 +318,6 @@
 
       commit(create) {
         let _this = this;
-        console.log(this.datetime)
         axios.post('/createMeeting',
           {
             data: create,

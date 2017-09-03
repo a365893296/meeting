@@ -113,7 +113,6 @@
 
     methods: {
       register(formName) {
-        console.log(formName)
         let _this = this;
 
         this.$refs['registerForm'].validate((valid) => {
@@ -125,7 +124,6 @@
                 'phone': formName.phone
               }).then(function (response) {
                 var data = response.data;
-                console.log(data);
                 if (data.isRegister) {
                   _this.$message({
                     message: '注册成功~',
@@ -150,7 +148,11 @@
 
             }
             else {
-              console.log('error submit!!');
+              _this.$message({
+                showClose: true,
+                message: '请正确填写表单',
+                type: 'error'
+              })
               return false;
             }
           }

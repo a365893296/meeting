@@ -205,10 +205,7 @@
           currentPage: _this.currentPage,
           pageSize: _this.pageSize
         }).then(function (response) {
-
-          console.log(response.data);
           var data = response.data;
-          console.log("data is  " + data);
           _this.tableData = data.meetings;
           _this.total = data.total;
 
