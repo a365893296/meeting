@@ -4,9 +4,25 @@ import Home from '../components/Home'
 import Login from '@/components/Login'
 import Register from '@/components/register'
 
+import store from '../vuex/store'
+
 Vue.use(Router)
 
-export default new Router({
+export const auth = (to,from,next)=>{
+
+  if(store.getters.user.id){
+    next() ;
+  }else{
+    router.push({
+      path:'/login',
+      query: {
+        forward:to.path ,
+      }
+    })
+  }
+}
+
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -23,6 +39,7 @@ export default new Router({
       path: '/home',
       // name : 'home' ,
       component: Home,
+      beforeEnter:auth,
       children: [
         {
           path: '',
@@ -41,3 +58,5 @@ export default new Router({
 
   ]
 })
+
+export default router

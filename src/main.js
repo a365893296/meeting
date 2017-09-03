@@ -4,14 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
-import VueResource from 'vue-resource'
+import store from './vuex/store'
 import 'element-ui/lib/theme-default/index.css'
 
 window.axios = require('axios');
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
-Vue.use(VueResource)
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf_token"]');
@@ -25,20 +24,9 @@ if (token) {
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {App},
   render: h => h(App)
 })
-
-// router.beforeEach((to,from,next)=>{
-//   if(!sessionStorage.getItem('remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d')){
-//     console.log('not found accessToken')
-//     next({
-//       path: '/login',
-//       query: { redirect: to.fullPath }
-//     })
-//   }else{
-//     next();
-//   }
-// })
 

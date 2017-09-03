@@ -39,8 +39,10 @@
 </template>
 
 <script>
-  //    import mockdata from '@/util/exit.js'
+  //      import mockdata from '@/util/exit.js'
   //    import ElMenuItem from "../../../node_modules/element-ui/packages/menu/src/menu-item";
+  import store from '../../vuex/store'
+
   export default {
 //        components: {ElMenuItem},
     data() {
@@ -64,7 +66,9 @@
       }
     },
     methods: {
+
       confirmLeave() {
+
         let _this = this;
         this.$confirm('是否退出系统?', '提示', {
           confirmButtonText: '确定',
@@ -73,8 +77,8 @@
         }).then(() => {
 
           axios.post('/logout', {}).then((response) => {
-            console.log(response.data);
             if (response.data.isLogout) {
+              _this.$store.commit('DELETEUSER');
               _this.$router.push('/login');
             }
           }).catch((error) => {
@@ -82,7 +86,6 @@
           });
 
         }).catch(() => {
-//                    this.$router.go(0);
           this.$message({
             type: 'info',
             message: '已取消'
@@ -92,12 +95,7 @@
       }
     },
 
-    // computed:{
-    //           onRoutes(){
-    //           	console.log(this.$route.path.replace('/',''))
-    //               return this.$route.path.replace('/','');
-    //           }
-    //       }
+
   }
 </script>
 

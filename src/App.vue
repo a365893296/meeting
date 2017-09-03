@@ -9,14 +9,17 @@
 </template>
 
 <script>
+  import store from './vuex/store'
 
   export default {
     name: 'app',
     data() {
       return {}
     },
-
-    methods: {}
+    methods: {},
+    mounted: function () {
+      store.dispatch('getUserInfo');
+    },
   }
 </script>
 

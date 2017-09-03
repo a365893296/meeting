@@ -249,7 +249,7 @@
       datetime: function () {
         this.durationIsChange = true;
         var d = new Date(this.date);
-
+        //转换时间格式 2000-00-00 00:00:00
         var res = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + this.time;
 
         return res;

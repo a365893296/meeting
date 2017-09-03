@@ -48,7 +48,7 @@
 
 <script>
 //  import mockdata from '@/util/login.js'
-
+import  store from '../vuex/store'
   export default {
     data() {
       return {
@@ -73,14 +73,13 @@
     },
     methods: {
       login(formName) {
-
         let _this = this;
         axios.post('/login', {
           'username': formName.username,
           'password': formName.password
         }).then(function (response) {
-          var data = response.data
-          console.log(data)
+          var data = response.data ;
+          _this.$store.commit('SETUSER',data.user) ;
           if (data.islogin) {
             _this.$router.push({path: '/home'})
           } else {
